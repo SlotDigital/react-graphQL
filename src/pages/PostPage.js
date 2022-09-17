@@ -1,11 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import PostPageContent from "../components/PostPageContent";
-import { data } from "../dummy-data/post";
+import { useQuery, gql } from "@apollo/client";
+
+const RESOURCES_QUERY = gql`
+  {
+    resources {
+      nodes {
+      id
+      title
+      date
+      slug
+      }
+    }
+  }
+`;
 
 export default function PostPage(props) {
-  const loading = false;
-  const error = null;
+
+  const { data, loading, error } = useQuery(RESOURCES_QUERY);
+
+  
+
   const postFound = true;
 
   return (
@@ -18,7 +34,7 @@ export default function PostPage(props) {
       ) : !postFound ? (
         <p>Post could not be found.</p>
       ) : (
-        <PostPageContent post={data.post} />
+        <PostPageContent post={data.resources} />
       )}
     </div>
   );
